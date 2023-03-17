@@ -27,9 +27,9 @@
 
   
 
-  &-container {
-  //  background-color: red;
-  }
+  // &-container {
+  // //  background-color: red;
+  // }
 
   &-group {
     display: flex;
@@ -114,17 +114,25 @@
 }
 
 
+.container-run_process {
+  margin-top: 20px;
+}
 
 .run-process {
   background-color: rgba(0, 204, 68, 0.568);
-  margin-top: 20px;
+
   padding: 10px;
   border-radius: 10px;
-  max-height: 360px;
-  height: 360px;
+  max-height: 320px;
+  height: 320px;
   overflow: hidden;
   overflow-y: auto;
   
+}
+
+
+.container-wait_process {
+  margin-top: 30px;
 }
 
 
@@ -132,21 +140,25 @@
   background-color: rgba(199, 202, 3, 0.555);
   padding: 10px;
   border-radius: 10px;
-  margin-top: 30px;
-  max-height: 360px;
-  height: 360px;
+
+  max-height: 320px;
+  height: 320px;
   overflow: hidden;
   overflow-y: auto;
 
 }
 
+.container-finish_process {
+  margin: 90px 0 0 0;
+}
+
 .finish-process {
   background-color: rgba(182, 2, 2, 0.603);
-  margin: 90px 0 0 0;
+
   padding: 10px;
   border-radius: 10px;
-  max-height: 360px;
-  height: 360px;
+  max-height: 320px;
+  height: 320px;
   overflow: hidden;
   overflow-y: auto;
   margin-bottom: 13px;
@@ -161,7 +173,7 @@
     // background-color: aqua;
     text-align: center;
     font-size: 30px;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
   }
 
   &-ul{

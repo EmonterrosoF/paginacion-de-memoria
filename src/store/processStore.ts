@@ -14,7 +14,7 @@ interface IRunProcess {
 
 interface IFinishProcess {
   value: string;
-  color: string;
+  color?: string;
 }
 
 interface IWaitingProcess {
@@ -33,7 +33,7 @@ interface IProcessStore {
 
   addPageFrame: (process: string, sizeProcess: number, color: string) => void;
 
-  addFinishProcess: (process: string, color: string) => void;
+  addFinishProcess: (process: string, indexOfProcessRemoved?: number, indexHelp?: number) => IFinishProcess[];
   removeFinishProcess: (process: string, color?: string) => IFinishProcess[];
   cleanTerminateProcess: () => void;
   addWaitingProcess: (process: string, sizeProcess: number, color: string) => void;
@@ -166,12 +166,22 @@ export const useProcessStore = create<IProcessStore>((set) => ({
     });
   },
 
-  addFinishProcess: (process: string, color: string) => {
+  addFinishProcess: (process, indexOfProcessRemoved, indexHelp = 0) => {
+    let copyFinishProcess: IFinishProcess[] = [];
     set((state) => {
-      return { finishProcess: [...state.finishProcess, { value: process, color }] };
+      if (indexOfProcessRemoved !== undefined && indexHelp === 0) {
+        state.finishProcess.splice(indexOfProcessRemoved, 0, { value: process });
+        copyFinishProcess = state.finishProcess;
+
+        return {};
+      }
+
+      copyFinishProcess = [...state.finishProcess, { value: process }];
+
+      return { finishProcess: [...state.finishProcess, { value: process }] };
     });
 
-    return { value: process, color };
+    return copyFinishProcess;
   },
 
   removeFinishProcess: (process: string, color = '') => {
@@ -206,7 +216,6 @@ export const useProcessStore = create<IProcessStore>((set) => ({
   },
 
   removeWaitingProcess(process: string) {
-    console.log('process desde remove waitin process', process);
     set((state) => ({ waitingProcess: state.waitingProcess.filter((proc) => proc.value !== process) }));
   },
 }));

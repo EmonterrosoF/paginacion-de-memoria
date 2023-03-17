@@ -32,79 +32,64 @@ const sizeProcess = [
 interface IProcess {
   id: number;
   name: string;
-  color: string;
 }
 
 const Process: IProcess[] = [
   {
     id: 1,
     name: 'A',
-    color: '#20dad8',
   },
   {
     id: 2,
     name: 'B',
-    color: '#e3671f',
   },
   {
     id: 3,
     name: 'C',
-    color: '#e13b86',
   },
   {
     id: 4,
     name: 'D',
-    color: '#e969fe',
   },
   {
     id: 5,
     name: 'E',
-    color: '#4537e6',
   },
   {
     id: 6,
     name: 'F',
-    color: '#505a4c',
   },
   {
     id: 7,
     name: 'G',
-    color: '#211d11',
   },
   {
     id: 8,
     name: 'H',
-    color: '#8d1f30',
   },
   {
     id: 9,
     name: 'I',
-    color: '#2b80c8',
   },
   {
     id: 10,
     name: 'J',
-    color: '#ff3fed',
   },
   {
     id: 11,
     name: 'K',
-    color: '#142a11',
   },
   {
     id: 12,
     name: 'L',
-    color: '#1d4890',
   },
   {
     id: 13,
     name: 'M',
-    color: '#ff0073',
   },
   {
     id: 14,
     name: 'N',
-    color: '#2bc9b3',
   },
 ];
 
@@ -113,24 +98,23 @@ function randomColor(colors: string[], pageFrame: IPageFrame[]): string {
 
   const existColor = pageFrame.find((page) => page.color === colors[random]);
 
-  console.log(pageFrame);
-  console.log('repite veces');
-
-  console.log(existColor);
+  // while (existColor) {
+  //   random = Math.floor(Math.random() * (colors.length - 1 - 0 + 1) + 0);
+  //   existColor = pageFrame.find((page) => page.color === colors[random]);
+  // }
 
   if (existColor) {
-    console.log('entra en es igual');
-
     return randomColor(colors, pageFrame);
   }
+
   return colors[random];
 }
 
-function pagesNotUseInFramePage(pageFrame: any[]) {
-  return pageFrame.reduce((prev, next) => {
-    return next.isUse ? prev : (prev += 1);
-  }, 0);
+function pagesNotUseInFramePage(pageFrame: IPageFrame[]) {
+  return pageFrame.reduce((prev, next) => (next.isUse ? prev : (prev += 1)), 0);
 }
+
+let helpProcessSelected = true;
 
 function ProcessControl() {
   const {
@@ -147,11 +131,11 @@ function ProcessControl() {
   } = useProcessStore();
   const [process, setProcess] = useState<IProcess[]>(Process);
   const [processSelected, setprocessSelected] = useState('A');
-  const [color, setColor] = useState('#F6AA1C');
+  // const [color, setColor] = useState('#279AF1');
   const [sizePage, setSizePage] = useState(1);
 
   const [removeProcess, setRemoveProcess] = useState('');
-  const [helpChangeSelected, setHelpChangeSelected] = useState(false);
+  // const [helpChangeSelected, setHelpChangeSelected] = useState(false);
 
   const handlerAdd = (e: FormEvent) => {
     e.preventDefault();
@@ -168,11 +152,7 @@ function ProcessControl() {
         setProcess(filterProcess);
         setprocessSelected(filterProcess[0].name);
 
-        console.log('dos veces click');
-        setColor(randomColor(colors, pageFrame));
-
-        addWaitingProcess(processSelected, sizePage, color);
-        // addFinishProcess(processSelected, color);
+        addWaitingProcess(processSelected, sizePage, randomColor(colors, pageFrame));
       }
       return;
     }
@@ -182,11 +162,8 @@ function ProcessControl() {
     setProcess(filterProcess);
     setprocessSelected(filterProcess[0].name);
 
-    setColor(randomColor(colors, pageFrame));
-    // if (filterProcess.length === 0) return;
-
-    addPageFrame(processSelected, sizePage, color);
-    addFinishProcess(processSelected, color);
+    addPageFrame(processSelected, sizePage, randomColor(colors, pageFrame));
+    addFinishProcess(processSelected);
     if (finishProcess.length === 0) {
       setRemoveProcess(processSelected);
     }
@@ -200,8 +177,10 @@ function ProcessControl() {
     const pageFram = pageFrame.find((pag) => pag.value === removeProcess);
 
     if (!exitstProcess) {
-      setProcess([...process, { id: Math.random() * (5 - 1), color, name: removeProcess }]);
+      setProcess([...process, { id: Math.random() * (5 - 1), name: removeProcess }]);
       const finishProcessFilter = removeFinishProcess(removeProcess, pageFram?.color);
+      setRemoveProcess(finishProcessFilter[0]?.value);
+      const indexOfRemoveProcess = finishProcess.findIndex((process) => process.value === removeProcess);
 
       let pageNotUse = pagesNotUseInFramePage(pageFrame);
       let indexHelp = 0;
@@ -215,20 +194,27 @@ function ProcessControl() {
           waitingProcess[indexHelp].color,
         );
         removeWaitingProcess(waitingProcess[indexHelp].value);
-        addFinishProcess(waitingProcess[indexHelp].value, waitingProcess[indexHelp].color);
+        // TODO: areglar el orden de los procesos en el select de terminar los procesos
+        const finishProcessUpdated = addFinishProcess(waitingProcess[indexHelp].value, indexOfRemoveProcess, indexHelp);
 
-        setRemoveProcess(waitingProcess[indexHelp].value);
+        // if (indexHelp === 0) {
+        // } else {
+        // }
+        // setRemoveProcess(()=>finishProcess[0].value);
 
+        setRemoveProcess(() => finishProcessUpdated[0]?.value);
+
+        console.log(finishProcessUpdated);
+
+        document.getElementById('formTerminatedProcess')?.reset();
         indexHelp += 1;
 
         pageNotUse = pagesNotUseInFramePage(pageFrame);
 
-        if (pageNotUse === 0) return (helpFunctionalProcessSelected = true);
+        if (pageNotUse === 0) return;
       }
-      setRemoveProcess(finishProcessFilter[0].value);
+      document.getElementById('formTerminatedProcess')?.reset();
     }
-
-    // helpFunctionalProcessSelected = false;
   };
 
   return (
@@ -264,15 +250,12 @@ function ProcessControl() {
         </form>
       </div>
       <div className="control-terminate">
-        <form onSubmit={handlerRemove} className="control-form">
+        <form id="formTerminatedProcess" onSubmit={handlerRemove} className="control-form">
           <div className="control-container">
             <div className="control-group">
               <span className="control-span">Proceso:</span>
               <select
-                onChange={(e) => {
-                  setRemoveProcess(e.target.value);
-                  setHelpChangeSelected(true);
-                }}
+                onChange={(e) => setRemoveProcess(e.target.value)}
                 className="control-select control-terminate-select"
               >
                 {finishProcess.map((proc, i) => (
@@ -298,9 +281,9 @@ function RunProcess() {
   const { runProcess } = useProcessStore();
 
   return (
-    <div className="run-process">
+    <div className="container-run_process">
       <h2 className="frame-h2">Procesos En Ejecucion</h2>
-      <ul>
+      <ul className="run-process">
         {runProcess.map((process, i) => (
           <div
             style={{
@@ -326,9 +309,9 @@ function RunProcess() {
 function WaitProcess() {
   const { waitingProcess } = useProcessStore();
   return (
-    <div className="wait-process">
+    <div className="container-wait_process">
       <h2 className="frame-h2">Procesos En Espera</h2>
-      <ul>
+      <ul className="wait-process">
         {waitingProcess.map((process, i) => (
           <div
             style={{
@@ -357,9 +340,9 @@ function FinishProcess() {
   const { terminateProcess, cleanTerminateProcess } = useProcessStore();
   return (
     <>
-      <div className="finish-process">
+      <div className="container-finish_process">
         <h2 className="frame-h2">Procesos Terminados</h2>
-        <ul>
+        <ul className="finish-process">
           {terminateProcess.map((process, i) => (
             <div
               style={{
