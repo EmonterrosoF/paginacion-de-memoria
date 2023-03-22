@@ -121,7 +121,7 @@
 .run-process {
   background-color: rgba(0, 204, 68, 0.568);
 
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 10px;
   max-height: 320px;
   height: 320px;
@@ -138,7 +138,7 @@
 
 .wait-process {
   background-color: rgba(199, 202, 3, 0.555);
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 10px;
 
   max-height: 320px;
@@ -155,7 +155,7 @@
 .finish-process {
   background-color: rgba(182, 2, 2, 0.603);
 
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 10px;
   max-height: 320px;
   height: 320px;
@@ -190,9 +190,9 @@
 
 
 
-  &-span{
+  // &-span{
 
-  } 
+  // } 
 
 &-div{
 

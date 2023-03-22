@@ -1,81 +1,45 @@
-# electron-vite-react
+# Pasos para entender el codigo de la app 💪👊
 
-[![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite)
-![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/vite-react-electron?color=fa6470)
-![GitHub issues](https://img.shields.io/github/issues/caoxiemeihao/vite-react-electron?color=d8b22d)
-![GitHub license](https://img.shields.io/github/license/caoxiemeihao/vite-react-electron)
-[![Required Node.JS >= 14.18.0 || >=16.0.0](https://img.shields.io/static/v1?label=node&message=14.18.0%20||%20%3E=16.0.0&logo=node.js&color=3f893e)](https://nodejs.org/about/releases)
+## tecnologias usadas
 
-English | [简体中文](README.zh-CN.md)
+- react
+- electron
+- typescript
 
-## 👀 Overview
+react nos ayuda para hacer todo lo de la UI osea toda la interfaz grafica y funcionalidad de la aplicacion
 
-📦 Ready out of the box  
-🎯 Based on the official [template-react-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts), project structure will be familiar to you  
-🌱 Easily extendable and customizable  
-💪 Supports Node.js API in the renderer process  
-🔩 Supports C/C++ native addons  
-🐞 Debugger configuration included  
-🖥 Easy to implement multiple windows  
+electron nos sirve para darnos un entorno de aplicacion de escritorio usando tecnologias web
 
-## 🛫 Quick start
+typescript es un lenguaje que nos da tipado de datos en javascript, osea poder colocarle tipos de datos como string, int etc, recordemos
+que en js cualquier variable le podemos asignar cualquier tipo de dato y luego reasignarle otro tipo de dato
 
-```sh
-npm create electron-vite
+## Instalacion
+
+```shell
+git clone https://github.com/EmonterrosoF/paginacion-de-memoria.git
+
+cd paginacion-de-memoria
+
+npm i
+
+# si quieren abrir el proyecto con vsCode
+code .
+
+# y luego que les habra vsCode, pueden abir una terminal adentro,
+# y luego ejecutar el siguiente comando para arrancar la app
+npm run dev
+
 ```
 
-![electron-vite-react.gif](/public/electron-vite-react.gif)
+## entendiendo las rutas ⤵️⤵️⤵️⤵️
 
-## 🐞 Debug
+luego de que ya tenemos habierto vsCode entramos a la carpeta <b style='background: blue;'>src</b> y luego nos dirigimos al archivo <b style='background: blue;'>App.tsx</b> que es el principal donde se renderizan todos los componentes que hacen parte de la app
 
-![electron-vite-react-debug.gif](/public/electron-vite-react-debug.gif)
+alli observamos los componentes
 
-## 📂 Directory structure
+![app](/public/app.png)
 
-Familiar React application structure, just with `electron` folder on the top :wink:  
-*Files in this folder will be separated from your React application and built into `dist-electron`*  
+podemos ver que los componentes son los que estan señalados
 
-```tree
-├── electron                                 Electron-related code
-│   ├── main                                 Main-process source code
-│   └── preload                              Preload-scripts source code
-│
-├── release                                  Generated after production build, contains executables
-│   └── {version}
-│       ├── {os}-{os_arch}                   Contains unpacked application executable
-│       └── {app_name}_{version}.{ext}       Installer for the application
-│
-├── public                                   Static assets
-└── src                                      Renderer source code, your React application
-```
-
-## 🚨 Be aware
-
-This template integrates Node.js API to the renderer process by default. If you want to follow **Electron Security Concerns** you might want to disable this feature. You will have to expose needed API by yourself.  
-
-To get started, remove the option as shown below. This will [modify the Vite configuration and disable this feature](https://github.com/electron-vite/vite-plugin-electron-renderer#config-presets-opinionated).
-
-```diff
-# vite.config.ts
-
-export default {
-  plugins: [
-    ...
--   // Use Node.js API in the Renderer-process
--   renderer({
--     nodeIntegration: true,
--   }),
-    ...
-  ],
-}
-```
-
-## 🔧 Additional features
-
-1. electron-updater 👉 [see docs](src/components/update/README.md)
-1. playwright
-
-## ❔ FAQ
-
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)
-- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
+y cada uno de esos componentes se encuentran en la carpeta <b style='background: blue;'>components</b> cada uno en su propio archivo, dentro de cada uno esta comentado la funcionalidad que hace cada uno,
+esos serian los archivos mas importantes en el proyecto
